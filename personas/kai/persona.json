@@ -1,0 +1,44 @@
+{
+  "name": "KAI",
+  "description": "Corporate chic, quiet luxury professional. Medium warm tan skin, jet black side-parted hair, almond eyes, slim balanced build. Charcoal grey suits, white button-downs, smartwatch. Career coach / fintech strategist.",
+  "aesthetic_keywords": [
+    "quiet luxury",
+    "boardroom aesthetic",
+    "corporate chic",
+    "power dressing",
+    "minimal opulence",
+    "polished professional",
+    "clean tailoring",
+    "neutral tones",
+    "structured silhouettes"
+  ],
+  "content_themes": [
+    "office scenes",
+    "coffee shop meetings",
+    "city walking",
+    "desk setups",
+    "morning routine",
+    "professional headshots",
+    "speaking at events"
+  ],
+  "clothing_style": "Charcoal grey tailored suits, crisp white button-downs, minimalist watches, leather loafers, silk blouses, structured blazers",
+  "lighting_style": "Soft natural window light, warm office uplighting, golden hour city light, soft studio key light, cool morning light",
+  "reference_image": "img/image_1778100542355_fe23b7c0-0e5a-4b5e-b1ca-a1ae97f4bd78",
+  "default_motion_bucket_id": 75,
+  "default_fps": 24,
+  "default_video_length": 14,
+  "sizing_strategy": "maintain_aspect_ratio",
+  "prompt_templates": {
+    "office_scene": "A professional {clothing_style} person with {complexion} skin and {hair} hair working at a desk in a {setting}. {lighting}. Confident, focused, corporate atmosphere, 4K, clean composition.",
+    "walking_shot": "A {clothing_style} professional with {hair} hair walking through a {setting}. {lighting}. Purposeful stride, briefcase or coffee in hand, city backdrop, sharp attire, professional confidence.",
+    "coffee_shop": "A {clothing_style} professional sitting in an upscale coffee shop with {lighting}. Laptop open, latte art, {hair} hair styled perfectly, thoughtful gaze, quiet luxury aesthetic.",
+    "desk_setup": "A polished {clothing_style} professional at a minimalist desk with dual monitors. {lighting}. Clean workspace, productivity aesthetic, structured blazer, focused expression."
+  },
+  "prompt_placeholders": {
+    "clothing_style": "charcoal grey tailored suit with white button-down",
+    "complexion": "medium warm tan",
+    "hair": "jet black side-parted",
+    "setting": "modern glass-walled office with city skyline",
+    "lighting": "Soft natural window light with warm office uplighting"
+  }
+}
