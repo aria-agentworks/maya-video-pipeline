@@ -1,0 +1,44 @@
+{
+  "name": "ZARA",
+  "description": "Authentic bestie, clean-girl minimalism. Medium-tan olive skin, dark espresso wavy/curly messy hair, natural makeup-free look. Oversized grey t-shirts, cozy loungewear. Wellness realist, skin positivity.",
+  "aesthetic_keywords": [
+    "clean girl",
+    "soft minimalist",
+    "wellness realist",
+    "skin positivity",
+    "cozy aesthetic",
+    "authentic beauty",
+    "natural glow",
+    "effortless chic",
+    "morning mindfulness"
+  ],
+  "content_themes": [
+    "bedroom morning routine",
+    "skincare routine",
+    "cozy home content",
+    "candid laughing shots",
+    "coffee in bed",
+    "natural lighting selfies",
+    "casual vlog style"
+  ],
+  "clothing_style": "Oversized grey cotton t-shirts, cozy cardigans, soft lounge pants, bare face with glowy skin, messy buns, thick cozy socks",
+  "lighting_style": "Soft morning window light, warm bedside lamp glow, diffused natural daylight, cozy warm tones, golden hour bedroom light",
+  "reference_image": "img/image_1778100543740_2d31f91a-644a-4e44-9732-ac28a9fbf9f8",
+  "default_motion_bucket_id": 115,
+  "default_fps": 24,
+  "default_video_length": 25,
+  "sizing_strategy": "maintain_aspect_ratio",
+  "prompt_templates": {
+    "morning_routine": "A natural {clothing_style} person with {complexion} skin and {hair} hair waking up in a cozy {setting}. {lighting}. Yawn, stretch, messy bed hair, authentic morning glow, candid, relatable.",
+    "skincare": "A {clothing_style} person doing skincare in a {setting}. {lighting}. Patting serum on {complexion} skin, natural texture, glass skin glow, bare face, soft focus.",
+    "cozy_home": "A {clothing_style} person lounging at home in a {setting}. {lighting}. Relaxed smile, mug of tea in hand, comfortable pose, candid laugh, warm atmosphere.",
+    "candid_laugh": "A {clothing_style} person laughing authentically in a {setting}. {lighting}. Genuine smile, crinkled eyes, relaxed posture, joyful moment, soft natural beauty."
+  },
+  "prompt_placeholders": {
+    "clothing_style": "oversized grey cotton t-shirt with soft lounge pants",
+    "complexion": "medium-tan olive",
+    "hair": "dark espresso wavy curly messy hair",
+    "setting": "sunlit bedroom with linen sheets and plants",
+    "lighting": "Soft morning window light with warm cozy tones"
+  }
+}
