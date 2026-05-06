@@ -32,9 +32,9 @@ from PIL import Image
 
 from prompts import PromptGenerator
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Configuration
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 load_dotenv()
 
@@ -49,11 +49,11 @@ PERSONAS_DIR = Path(__file__).parent / "personas"
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 # Default Stable Video Diffusion model
-MODEL_VERSION = "stability-ai/stable-video-diffusion:3f0457e4619daac51203dedb472816fd4af51f3149fa7a9e0b5ffcf1b8172438"
+MODEL_VERSION = "sunfjun/stable-video-diffusion:d68b6e09eedbac7a49e3d8644999d93579c386a083768235cabca88796d70d82"
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Persona Loading
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 
 def load_persona(persona_name: str) -> dict:
@@ -77,7 +77,7 @@ def build_config(args: argparse.Namespace) -> dict:
     or raw arguments (image + name + style + motion).
     """
     if args.persona:
-        # --- Preset mode: load from persona.json ---
+        # ---- Preset mode: load from persona.json ----
         persona = load_persona(args.persona)
         ref_image = (
             args.image
@@ -89,7 +89,7 @@ def build_config(args: argparse.Namespace) -> dict:
         name = persona["name"]
         log.info("Loaded persona: %s (motion=%s)", name, motion_bucket_id)
     else:
-        # --- Raw mode: use provided arguments ---
+        # ---- Raw mode: use provided arguments ----
         if not args.image:
             log.error("Raw mode requires --image. Use --persona for presets, or provide --image.")
             sys.exit(1)
@@ -112,9 +112,9 @@ def build_config(args: argparse.Namespace) -> dict:
     }
 
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # File Helpers
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 
 def read_script(path: str) -> str:
@@ -140,9 +140,9 @@ def validate_image(path: str) -> None:
         sys.exit(1)
 
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Replicate API
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 
 def submit_prediction(image_path: str, prompt: str, config: dict) -> dict:
@@ -155,12 +155,13 @@ def submit_prediction(image_path: str, prompt: str, config: dict) -> dict:
         )
         sys.exit(1)
 
-    # Read the image file as base64 data URI
-    from base64 import b64encode
-
-    with open(image_path, "rb") as f:
-        img_data = b64encode(f.read()).decode("utf-8")
-        img_uri = f"data:image/{Path(image_path).suffix[1:]};base64,{img_data}"
+    if image_path.startswith("http://") or image_path.startswith("https://"):
+        img_uri = image_path
+    else:
+        from base64 import b64encode
+        with open(image_path, "rb") as f:
+            img_data = b64encode(f.read()).decode("utf-8")
+            img_uri = f"data:image/{Path(image_path).suffix[1:]};base64,{img_data}"
 
     log.info("Submitting prediction to Replicate (model: %s)...", MODEL_VERSION)
     log.info("  Prompt: %s", prompt[:80] + "..." if len(prompt) > 80 else prompt)
@@ -168,14 +169,17 @@ def submit_prediction(image_path: str, prompt: str, config: dict) -> dict:
              config["motion_bucket_id"], config["fps"], config["video_length"])
 
     try:
+        video_length_str = "14_frames_with_svd_xt" if config["video_length"] == 25 else "14_frames_with_svd"
         output = replicate.run(
             MODEL_VERSION,
             input={
                 "input_image": img_uri,
-                "video_length": config["video_length"],
+                "video_length": video_length_str,
                 "sizing_strategy": config["sizing_strategy"],
                 "frames_per_second": config["fps"],
                 "motion_bucket_id": config["motion_bucket_id"],
+                "cond_aug": 0.02,
+                "decoding_t": 14,
             },
         )
         return output
@@ -199,15 +203,18 @@ def download_video(url: str, output_path: Path) -> Path:
     return output_path
 
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Main Pipeline
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 
 def run_pipeline(config: dict) -> Path:
     """Execute the full video generation pipeline."""
     name = config["name"]
-    script_text = read_script(config["script_path"])
+    if config["script_path"] is None:
+        script_text = "A glamorous woman walking in neon city lights, cinematic lighting, hyper-realistic"
+    else:
+        script_text = read_script(config["script_path"])
     ref_image = str(config["reference_image"])
     validate_image(ref_image)
 
@@ -240,9 +247,9 @@ def run_pipeline(config: dict) -> Path:
     return download_video(video_url, output_path)
 
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # CLI
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -323,8 +330,8 @@ Examples:
     parser.add_argument(
         "--script",
         type=str,
-        required=True,
-        help="Path to the script text file describing the scene",
+        default=None,
+        help="Path to the script text file",
     )
     parser.add_argument(
         "--output",
@@ -336,9 +343,9 @@ Examples:
     return parser
 
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Entry Point
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 
 def main():
