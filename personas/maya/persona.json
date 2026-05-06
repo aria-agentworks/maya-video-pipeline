@@ -1,0 +1,45 @@
+{
+  "name": "MAYA",
+  "description": "Sultry tech-luxe, cyber-elegance. Fair olive/honey-tan complexion, jet black S-curve waves, almond brown eyes, curvy hourglass build. Futuristic glamour, latex/PVC bodysuits, high-fashion edge. Luxury global nomad vibe.",
+  "aesthetic_keywords": [
+    "cyber-elegance",
+    "baddie core",
+    "luxury global nomad",
+    "neon nights",
+    "high-fashion edge",
+    "futuristic glamour",
+    "tech-luxe",
+    "sultry sophistication",
+    "PVC and latex fashion",
+    "yacht club chic"
+  ],
+  "content_themes": [
+    "glamour shots",
+    "club and luxury scenes",
+    "walking shots",
+    "mirror selfies",
+    "penthouse sunset poses",
+    "luxury hotel room teases",
+    "neon-lit nightlife"
+  ],
+  "clothing_style": "Latex/PVC bodysuits, futuristic cutouts, strappy heels, metallic accessories, leather mini dresses, oversized sunglasses, designer bags",
+  "lighting_style": "Neon pink and blue lighting, dramatic shadows, warm amber uplighting, reflective surfaces, club strobe effects, golden hour backlight",
+  "reference_image": "img/image_1778100540929_f5152823-4a6f-4c1e-8bfb-d2d03c20c8e2",
+  "default_motion_bucket_id": 165,
+  "default_fps": 24,
+  "default_video_length": 25,
+  "sizing_strategy": "maintain_aspect_ratio",
+  "prompt_templates": {
+    "glamour_shot": "A glamorous {clothing_style} woman with {complexion} skin and {hair} hair, posing confidently in a {setting}. {lighting}. Cinematic, high fashion, 4K, sultry expression, perfect lighting, smooth skin, hourglass silhouette.",
+    "walking_shot": "A confident {clothing_style} woman with {hair} hair walking down a {setting}. {lighting}. Slow motion walk, confident stride, hips swaying, model walk, cinematic, high fashion.",
+    "mirror_selfie": "A {clothing_style} woman taking a mirror selfie in a {setting}. {lighting}. Phone in hand, sultry gaze, reflection in mirror, cinematic lighting, glamorous.",
+    "club_scene": "A {clothing_style} woman dancing in a luxury nightclub with {lighting}. Neon lights reflecting off her {hair} hair, confident movement, cinematic, baddie energy, VIP section."
+  },
+  "prompt_placeholders": {
+    "clothing_style": "latex PVC bodysuit with strappy heels",
+    "complexion": "fair olive honey-tan",
+    "hair": "jet black S-curve waves",
+    "setting": "luxury penthouse with panoramic city views",
+    "lighting": "Warm amber uplighting with neon pink accents, dramatic shadows"
+  }
+}
