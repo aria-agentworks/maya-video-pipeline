@@ -2,6 +2,10 @@ name: Run Maya Video Pipeline
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/run-pipeline.yml'
 
 env:
   REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
@@ -33,18 +37,16 @@ jobs:
 
       - name: Upload video to R2
         env:
-          R2_ENDPOINT_URL: ${{ secrets.R2_ENDPOINT_URL }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_BUCKET: ${{ secrets.R2_BUCKET }}
-          R2_KEY: ${{ secrets.R2_KEY }}
-          R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
+          R2_ENDPOINT_URL: https://a970eb068f3a6e1001defd42696cd440.r2.cloudflarestorage.com
+          R2_ACCESS_KEY_ID: a970eb068f3a6e1001defd42696cd440
+          R2_SECRET_ACCESS_KEY: afd7dba583ae4a2225f5c0feede764ada51d69dddad1dc8507d3e3c578dc4ef7
+          R2_BUCKET: qte2wq7f5yx91i2k4uoye3u8pln544fp
+          R2_KEY: test/maya_test1.mp4
         run: |
           python -c "
 import boto3
 import os
 
-# Find the generated video file in output/ directory
 output_dir = 'output/'
 video_files = []
 for root, dirs, files in os.walk(output_dir):
@@ -53,14 +55,12 @@ for root, dirs, files in os.walk(output_dir):
             video_files.append(os.path.join(root, f))
 
 if not video_files:
-    print('No video files found in output/ directory')
+    print('No video files found in output/')
     exit(1)
 
-# Use the first video file found
 video_file = video_files[0]
 print(f'Uploading: {video_file}')
 
-# Configure S3 client for R2
 s3_client = boto3.client(
     's3',
     endpoint_url=os.environ['R2_ENDPOINT_URL'],
@@ -68,21 +68,20 @@ s3_client = boto3.client(
     aws_secret_access_key=os.environ['R2_SECRET_ACCESS_KEY'],
 )
 
-# Upload the file
 bucket = os.environ['R2_BUCKET']
 key = os.environ['R2_KEY']
-public_url = os.environ['R2_PUBLIC_URL']
 
 with open(video_file, 'rb') as f:
     s3_client.upload_fileobj(f, bucket, key)
 
-print(f'Uploaded successfully to {public_url}')
-print(f'video_url={public_url}')
-" >> $GITHUB_STEP_SUMMARY
+print(f'Uploaded successfully to {"https://pub-85573262a9e846c5896860df66eb8299.r2.dev"}/{key}')
+"
 
-      - name: Output public URL
+      - name: Output URL
         run: |
-          echo "## ✅ Pipeline Complete" >> $GITHUB_STEP_SUMMARY
+          PUBLIC_URL="https://pub-85573262a9e846c5896860df66eb8299.r2.dev"
+          KEY="test/maya_test1.mp4"
+          echo "## Pipeline Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Public Video URL:**" >> $GITHUB_STEP_SUMMARY
-          echo "${{ secrets.R2_PUBLIC_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "Public Video URL:" >> $GITHUB_STEP_SUMMARY
+          echo "$PUBLIC_URL/$KEY" >> $GITHUB_STEP_SUMMARY
