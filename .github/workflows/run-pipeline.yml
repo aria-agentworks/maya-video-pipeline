@@ -44,38 +44,38 @@ jobs:
           R2_KEY: test/maya_test1.mp4
         run: |
           python -c "
-import boto3
-import os
+          import boto3
+          import os
 
-output_dir = 'output/'
-video_files = []
-for root, dirs, files in os.walk(output_dir):
-    for f in files:
-        if f.endswith(('.mp4', '.mov', '.avi', '.webm')):
-            video_files.append(os.path.join(root, f))
+          output_dir = 'output/'
+          video_files = []
+          for root, dirs, files in os.walk(output_dir):
+              for f in files:
+                  if f.endswith(('.mp4', '.mov', '.avi', '.webm')):
+                      video_files.append(os.path.join(root, f))
 
-if not video_files:
-    print('No video files found in output/')
-    exit(1)
+          if not video_files:
+              print('No video files found in output/')
+              exit(1)
 
-video_file = video_files[0]
-print(f'Uploading: {video_file}')
+          video_file = video_files[0]
+          print(f'Uploading: {video_file}')
 
-s3_client = boto3.client(
-    's3',
-    endpoint_url=os.environ['R2_ENDPOINT_URL'],
-    aws_access_key_id=os.environ['R2_ACCESS_KEY_ID'],
-    aws_secret_access_key=os.environ['R2_SECRET_ACCESS_KEY'],
-)
+          s3_client = boto3.client(
+              's3',
+              endpoint_url=os.environ['R2_ENDPOINT_URL'],
+              aws_access_key_id=os.environ['R2_ACCESS_KEY_ID'],
+              aws_secret_access_key=os.environ['R2_SECRET_ACCESS_KEY'],
+          )
 
-bucket = os.environ['R2_BUCKET']
-key = os.environ['R2_KEY']
+          bucket = os.environ['R2_BUCKET']
+          key = os.environ['R2_KEY']
 
-with open(video_file, 'rb') as f:
-    s3_client.upload_fileobj(f, bucket, key)
+          with open(video_file, 'rb') as f:
+              s3_client.upload_fileobj(f, bucket, key)
 
-print(f'Uploaded successfully to {"https://pub-85573262a9e846c5896860df66eb8299.r2.dev"}/{key}')
-"
+          print(f'Uploaded successfully to {"https://pub-85573262a9e846c5896860df66eb8299.r2.dev"}/{key}')
+          "
 
       - name: Output URL
         run: |
