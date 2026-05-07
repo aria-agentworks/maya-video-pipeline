@@ -1,0 +1,52 @@
+name: RunPod Apply (Manual Only)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  submit-hubspot-form:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Submit HubSpot form
+        run: |
+          python -c "
+import requests
+import json
+
+url = 'https://api.hsforms.com/submissions/v3/integration/submit/9996009/b1df9b4d-8d8c-4a44-8c5b-2a7b9f8b6d1a'
+
+payload = {
+    'fields': [
+        {'name': 'email', 'value': 'aria.agentworks@gmail.com'},
+        {'name': 'company', 'value': 'AgentWorks'},
+        {'name': 'website', 'value': 'https://ariaagent.agency'},
+        {'name': 'company_size', 'value': '1-5'},
+        {'name': 'country', 'value': 'India'},
+        {'name': 'jobtitle', 'value': 'Founder/CEO'},
+        {'name': 'message', 'value': 'AI agent infrastructure and video generation pipeline for businesses'},
+    ],
+    'context': {
+        'pageUri': 'https://ecykq.share.hsforms.com/2vcTPepClTaiobUfHmQcjAg',
+        'pageName': 'RunPod Startup Program'
+    }
+}
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+response = requests.post(url, data=json.dumps(payload), headers=headers)
+print('Status Code:', response.status_code)
+print('Response:', response.text)
+"
