@@ -14,12 +14,8 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        env:
-          REPLICATE_API_TOKEN: "${{ secrets.REPLICATE_API_KEY }}"
         run: |
           pip install -r requirements.txt
-          pip install replicate requests boto3 botocore
+          pip install requests boto3 botocore
       - name: Generate images
-        env:
-          REPLICATE_API_TOKEN: "${{ secrets.REPLICATE_API_KEY }}"
         run: python generate_maya_images.py
